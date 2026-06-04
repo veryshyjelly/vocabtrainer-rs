@@ -20,6 +20,8 @@ async fn main() {
         sessions: RwLock::new(HashMap::new()),
     });
 
+    let port = std::env::var("PORT").unwrap_or("8080".into());
+
     let app = Router::new()
         .route("/", get(get_index))
         .route("/style.css", get(get_style))
@@ -31,7 +33,7 @@ async fn main() {
         .route("/api/next", post(handle_next))
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await.unwrap();
     println!("[+] Server running locally on http://localhost:8080");
     axum::serve(listener, app).await.unwrap();
 }
