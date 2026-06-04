@@ -3,6 +3,7 @@ use std::sync::Arc;
 use axum::extract::{State, Json};
 use axum::http::{HeaderValue, StatusCode};
 use axum::response::{Html, IntoResponse, Response};
+use axum::http::header::CONTENT_TYPE;
 use uuid::Uuid;
 use vocabtrainer::VocabTrainerClient;
 use crate::utils::build_simplified_state;
@@ -139,14 +140,14 @@ pub(crate) async fn get_style() -> Response {
     )));
     response
         .headers_mut()
-        .insert("CONTENT_TYPE", HeaderValue::from_static("text/css"));
+        .insert(CONTENT_TYPE, HeaderValue::from_static("text/css"));
     response
 }
 
 pub(crate) async fn get_app() -> Response {
     let mut response = Response::new(axum::body::Body::from(include_str!("../../../static/app.js")));
     response.headers_mut().insert(
-        "CONTENT_TYPE",
+        CONTENT_TYPE,
         HeaderValue::from_static("application/javascript"),
     );
     response
