@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <title>Kobo VocabTrainer</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="./style.css"/>
+    <script src="./app.js"></script>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Screen 1: Login -->
+    <div id="screen-login" class="screen">
+        <div class="card">
+            <h2 class="center">Sign In</h2>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" value="" placeholder="email@domain.com"/>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" value="" placeholder="••••••••"/>
+            </div>
+            <button id="btn-signin" class="btn btn-primary block">Sign In</button>
+            <div class="center" style="margin: 15px 0;">-- OR --</div>
+            <button id="btn-guest" class="btn block">Play as Guest</button>
+        </div>
+    </div>
+
+    <!-- Screen 2: Game Board -->
+    <div id="screen-game" class="screen" style="display: none;">
+        <div class="stats-bar">
+           <b>Level:</b> &nbsp; <span id="stat-level">Novice</span>
+            &nbsp; &nbsp; &nbsp;
+           <b>Points:</b> &nbsp; <span id="stat-points">0</span>
+            &nbsp; &nbsp; &nbsp;
+           <b>Streak:</b> &nbsp; <span id="stat-streak">0 🔥</span>
+        </div>
+        <br>
+
+        <div class="card">
+            <div id="prompt" class="question-prompt">Loading question...</div>
+
+            <!-- For Multiple Choice -->
+            <div id="choices-container" class="choices-list"></div>
+
+            <!-- For Spelling -->
+            <div id="spelling-container" class="spelling-input-group" style="display: none;">
+                <input type="text" id="spelling-input" class="text-input" placeholder="Type spelling guess here..."/>
+                <button id="btn-submit-spelling" class="btn btn-primary block" style="margin-top: 15px;">Submit Guess</button>
+            </div>
+
+            <!-- Optional Hint -->
+            <button id="btn-hint" class="btn block" style="display: none; margin-top: 20px;">Use 50/50 Hint</button>
+        </div>
+    </div>
+
+    <!-- Screen 3: Results Feedback -->
+    <div id="screen-result" class="screen" style="display: none;">
+        <div class="card center">
+            <h1 id="result-status" class="correct-text">CORRECT!</h1>
+            <h2 id="result-word" style="font-size: 2em; margin: 10px 0;">magnanimous</h2>
+            <p id="result-definition" class="def-text">noble and generous in spirit</p>
+            <p id="result-context" class="context-text">"He was a magnanimous ruler..."</p>
+            <h3 id="result-points" style="margin: 15px 0;">+100 Points</h3>
+            <button id="btn-next" class="btn btn-primary block">Next Question</button>
+        </div>
+    </div>
+</div>
+
+<div id="loader" style="display:none;" class="center">Loading state...</div>
+<div id="error-log"></div>
+
+</body>
+</html>

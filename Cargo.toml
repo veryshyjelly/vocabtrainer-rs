@@ -1,0 +1,28 @@
+[package]
+name = "vocabtrainer"
+version = "0.1.0"
+edition = "2021"
+description = "A Rust package containing the VocabTrainer library, CLI app, and Kobo E-Reader proxy"
+
+[dependencies]
+reqwest = { version = "0.11", features = ["json", "cookies"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_urlencoded = "0.7"
+tokio = { version = "1.0", features = ["full"] }
+base64 = "0.21"
+thiserror = "1.0"
+scraper = "0.19"
+inquire = "0.7"
+axum = "0.7"                       # Added for Kobo Server
+tower-http = { version = "0.5", features = ["cors", "fs"] } # Added for Kobo Server
+uuid = { version = "1.0", features = ["v4"] } # Added for Session Mapping
+regex = "1.12.3"
+
+[[bin]]
+name = "trainer"
+path = "src/bin/trainer.rs"
+
+[[bin]]
+name = "kobo_proxy"
+path = "src/bin/kobo_proxy.rs"
