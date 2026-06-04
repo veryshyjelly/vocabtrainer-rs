@@ -125,6 +125,10 @@ pub(crate) async fn handle_next(
     }
 }
 
+pub(crate) async fn health() -> StatusCode {
+    StatusCode::OK
+}
+
 pub(crate) async fn get_index() -> Html<&'static str> {
     Html(include_str!("../../../static/index.html"))
 }

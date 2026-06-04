@@ -24,6 +24,7 @@ async fn main() {
         .route("/", get(get_index))
         .route("/style.css", get(get_style))
         .route("/app.js", get(get_app))
+        .route("/health", get(health))
         .route("/api/start", post(handle_start))
         .route("/api/answer", post(handle_answer))
         .route("/api/hint", post(handle_hint))
