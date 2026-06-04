@@ -87,10 +87,23 @@ function handleGameState(state) {
 			var choice = state.choices[i];
 			var div = document.createElement('div');
 			div.className = 'choice-box';
-			div.textContent = choice.text;
 			div.setAttribute('data-nonce', choice.nonce);
 
-			// Attach inline touch/click selection handler
+			// 1. If an image URL is parsed, append an image node
+			if (choice.image_url) {
+				var img = document.createElement('img');
+				img.className = 'choice-img';
+				img.src = choice.image_url;
+				div.appendChild(img);
+			}
+
+			// 2. Append text options if present (supports text-only and hybrid choice elements)
+			if (choice.text && choice.text.trim() !== '') {
+				var span = document.createElement('span');
+				span.textContent = choice.text;
+				div.appendChild(span);
+			}
+
 			div.onclick = function() {
 				submitAnswer(this.getAttribute('data-nonce'));
 			};
@@ -124,7 +137,7 @@ function submitAnswer(answerStr) {
 		document.getElementById('result-word').textContent = res.word;
 		document.getElementById('result-definition').textContent = res.definition;
 		document.getElementById('result-context').textContent = res.context;
-		document.getElementById('result-points').textContent = '+' + res.points_earned + ' Points';
+		document.getElementById('result-points').textContent = '+' + res.points_earned + ' Points ' + res.progress + '% Mastery';
 
 		// Update running stats
 		document.getElementById('stat-points').textContent = res.total_points;

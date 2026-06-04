@@ -2,7 +2,6 @@ use crate::error::VocabError;
 use crate::models::{ChallengeState, HintResponse, SaveAnswerResponse};
 use base64::{engine::general_purpose::STANDARD, Engine as _};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, USER_AGENT};
-use std::sync::Arc;
 
 const DEFAULT_BASE_URL: &str = "https://www.vocabulary.com";
 const DEFAULT_USER_AGENT: &str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";

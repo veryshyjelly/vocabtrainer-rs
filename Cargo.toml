@@ -14,9 +14,8 @@ base64 = "0.21"
 thiserror = "1.0"
 scraper = "0.19"
 inquire = "0.7"
-axum = "0.7"                       # Added for Kobo Server
-tower-http = { version = "0.5", features = ["cors", "fs"] } # Added for Kobo Server
-uuid = { version = "1.0", features = ["v4"] } # Added for Session Mapping
+axum = "0.7"
+uuid = { version = "1.0", features = ["v4"] }
 regex = "1.12.3"
 
 [[bin]]
@@ -25,4 +24,4 @@ path = "src/bin/trainer.rs"
 
 [[bin]]
 name = "kobo_proxy"
-path = "src/bin/kobo_proxy.rs"
+path = "src/bin/kobo_proxy/main.rs"

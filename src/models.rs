@@ -93,7 +93,7 @@ pub struct ProgressStats {
 pub struct PronunciationVariant {
     #[serde(rename = "audioId")]
     pub audio_id: Option<String>,
-    pub ipa: String,
+    pub ipa: Option<String>,
     pub region: String,
 }
 

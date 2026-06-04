@@ -1,9 +1,8 @@
 use inquire::{Password, PasswordDisplayMode, Select, Text};
 use regex::Regex;
-use scraper::{Html, Node, Selector};
+use scraper::{Html, Selector};
 use std::time::Instant;
-use vocabtrainer::models::SaveAnswerResponse;
-use vocabtrainer::VocabTrainerClient;
+use vocabtrainer::{models::SaveAnswerResponse, VocabTrainerClient};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -53,10 +52,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // Decode HTML structure
         let raw_html = client.decode_question_html(&question.code)?;
-        // println!("_____________");
-        // println!("{}", raw_html);
-        // println!("_____________");
-
         let document = Html::parse_document(&raw_html);
 
         // Extract and combine any instructional or contextual text
@@ -172,21 +167,43 @@ fn parse_text(document: &Html, selector_str: &str) -> String {
     }
 }
 
+pub fn extract_image_url(style: &str) -> Option<String> {
+    if let Some(start_idx) = style.find("url(") {
+        let sub = &style[start_idx + 4..];
+        let clean_sub = sub.trim_start_matches('\'').trim_start_matches('"');
+        if let Some(end_idx) = clean_sub.find(|c| c == '\'' || c == '"' || c == ')') {
+            return Some(clean_sub[..end_idx].to_string());
+        }
+    }
+    None
+}
+
 /// Parses the nonces and text of choice elements using multiple fallback CSS Selectors
 fn parse_choices(document: &Html) -> Vec<(String, String)> {
-    let fallback_selectors = ["div.choices a", "a.choice", "a[accesskey]"];
+    let fallback_selectors = [
+        "div.choices a",
+        "a.choice",
+        "a[accesskey]",
+    ];
 
     for selector_str in fallback_selectors {
         let selector = Selector::parse(selector_str).unwrap();
         let mut choices = Vec::new();
         for element in document.select(&selector) {
             if let Some(nonce) = element.value().attr("data-nonce") {
-                let text = element
-                    .text()
-                    .collect::<Vec<_>>()
-                    .join(" ")
-                    .trim()
-                    .to_string();
+                let mut text = element.text().collect::<Vec<_>>().join(" ").trim().to_string();
+
+                // Extract image url if present in style tags [Citations: index-1mp2a04.css]
+                if let Some(style_attr) = element.value().attr("style") {
+                    if let Some(img_url) = extract_image_url(style_attr) {
+                        if text.is_empty() {
+                            text = format!("[Image Option] ({})", img_url);
+                        } else {
+                            text = format!("{} [Image: {}]", text, img_url);
+                        }
+                    }
+                }
+
                 if !nonce.is_empty() {
                     choices.push((nonce.to_string(), text));
                 }
