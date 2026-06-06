@@ -64,6 +64,13 @@ function handleGameState(state) {
 	document.getElementById('stat-streak').textContent = state.streak + ' 🔥';
 
 	document.getElementById('prompt').textContent = state.prompt;
+	var prompt_img = document.getElementById('prompt-img');
+	if (state.image_url) {
+		prompt_img.style.display = 'block';
+		prompt_img.src = state.image_url;
+	} else {
+		prompt_img.style.display = 'none';
+	}
 
 	var btnHint = document.getElementById('btn-hint');
 	if (state.hints.indexOf('F') !== -1) {

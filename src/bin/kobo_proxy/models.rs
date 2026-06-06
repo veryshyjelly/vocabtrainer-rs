@@ -17,6 +17,8 @@ pub struct SimplifiedState {
     pub session_token: String,
     pub is_spelling: bool,
     pub prompt: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     pub choices: Vec<ParsedChoice>,
     pub hints: Vec<String>,
     pub secret: String,

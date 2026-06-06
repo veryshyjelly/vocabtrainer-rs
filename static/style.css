@@ -105,6 +105,15 @@ input[type="password"],
 	justify-content: center;
 }
 
+.prompt-img {
+	max-width: 100%;
+	max-height: 180px;
+	height: auto;
+	border: 2px solid #000000;
+	margin-bottom: 8px;
+	image-rendering: -webkit-optimize-contrast;
+}
+
 /* High-contrast and crisp rendering settings for image selections */
 .choice-img {
 	max-width: 100%;

@@ -44,6 +44,19 @@ pub(crate) fn parse_choices(document: &scraper::Html) -> Vec<ParsedChoice> {
     Vec::new()
 }
 
+pub(crate) fn parse_image(document: &scraper::Html, selector_str: &str) -> Option<String> {
+    let selector = scraper::Selector::parse(selector_str).unwrap();
+    if let Some(element) = document.select(&selector).next() {
+        if let Some(style_attr) = element.value().attr("style") {
+            extract_image_url(style_attr)
+        } else {
+            None
+        }
+    } else {
+        None
+    }
+}
+
 
 /// Helper to extract raw image URLs from inline background-image style definitions
 pub(crate) fn extract_image_url(style: &str) -> Option<String> {
@@ -75,6 +88,7 @@ pub(crate) fn build_simplified_state(session_token: &str, challenge: &ChallengeS
         .unwrap_or_default();
     let document = scraper::Html::parse_document(&raw_html);
 
+    let image_url = parse_image(&document, "div.questionContent");
     let mut prompt = parse_text(&document, "div.instructions");
     let content = parse_text(&document, "div.sentence");
     if !content.is_empty() {
@@ -94,6 +108,7 @@ pub(crate) fn build_simplified_state(session_token: &str, challenge: &ChallengeS
         is_spelling,
         prompt,
         choices,
+        image_url,
         hints: q.hints.clone(),
         secret: challenge.secret.clone(),
         total_points: challenge.pdata.as_ref().and_then(|p| p.points).unwrap_or(0),
